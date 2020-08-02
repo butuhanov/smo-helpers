@@ -31,8 +31,10 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		UserID   int    `json:"user_id"`
-		FromID   int    `json:"from_id"`
+		ID int `json:"id"` // идентификатор сообщения
+		Date int  `json:"date"` // время отправки в Unixtime
+	//	UserID   int    `json:"user_id"` // устарело с версии 5.80
+		FromID   int    `json:"from_id"` // идентификатор отправителя
 		PhotoID  int    `json:"photo_id"`
 		PostID   int    `json:"post_id"`
 		JoinType string `json:"join_type"`
