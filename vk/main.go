@@ -31,14 +31,16 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		ID   int `json:"id"`   // идентификатор сообщения
-		Date int `json:"date"` // время отправки в Unixtime
-		//	UserID   int    `json:"user_id"` // устарело с версии 5.80
-		FromID   int    `json:"from_id"` // идентификатор отправителя
-		PhotoID  int    `json:"photo_id"`
-		PostID   int    `json:"post_id"`
-		JoinType string `json:"join_type"`
-		Text     string `json:"text"`
+		UserID   int      `json:"user_id"` // устарело с версии 5.80
+		PhotoID  int      `json:"photo_id"`
+		PostID   int      `json:"post_id"`
+		JoinType string   `json:"join_type"`
+		Message  struct { // Личное сообщение
+			ID     int    `json:"id"`      // идентификатор сообщения
+			Date   int    `json:"date"`    // время отправки в Unixtime
+			FromID int    `json:"from_id"` // идентификатор отправителя
+			Text   string `json:"text"`    // текст сообщения
+		} `json:"message"`
 	} `json:"object"`
 	GroupID int `json:"group_id"`
 }
@@ -70,12 +72,68 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		return "ok", nil
 
+		// Раздел Сообщения
 	case "message_new":
 		// message := event.Object.JoinType
-		userID := strconv.Itoa(event.Object.FromID)
+		userID := strconv.Itoa(event.Object.Message.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "входящее сообщение:" + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "входящее сообщение:" + event.Object.Message.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "message_allow":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.Message.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "подписка на сообщения от сообщества:" + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "message_deny":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.Message.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "новый запрет сообщений от сообщества:" + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	// Раздел Фотографии
+
+	case "photo_comment_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.Message.FromID)
+		photoID := strconv.Itoa(event.Object.PhotoID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Добавлен комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "photo_comment_edit":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.Message.FromID)
+		photoID := strconv.Itoa(event.Object.PhotoID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Отредактирован комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "photo_comment_delete":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		photoID := strconv.Itoa(event.Object.PhotoID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Удален комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -90,28 +148,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " покинул группу"
-		sendMessage(message, sendToUserID)
-		sendMessage(message, sendToUserIDControl)
-		return "ok", nil
-
-	case "photo_comment_new":
-		// message := event.Object.JoinType
-		userID := strconv.Itoa(event.Object.FromID)
-		photoID := strconv.Itoa(event.Object.PhotoID)
-		firstName, lastName := getUserInfo(userID)
-
-		message := "Добавлен комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
-		sendMessage(message, sendToUserID)
-		sendMessage(message, sendToUserIDControl)
-		return "ok", nil
-
-	case "photo_comment_edit":
-		// message := event.Object.JoinType
-		userID := strconv.Itoa(event.Object.FromID)
-		photoID := strconv.Itoa(event.Object.PhotoID)
-		firstName, lastName := getUserInfo(userID)
-
-		message := "Отредактирован комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -145,9 +181,9 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-	case "message_typing_state":
-		// кто-то набирает сообщение
-		return "ok", nil
+	// case "message_typing_state":
+	// 	// кто-то набирает сообщение
+	// 	return "ok", nil
 
 	default:
 		message := "Произошло событие:" + event.Type
