@@ -31,9 +31,9 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		ID int `json:"id"` // идентификатор сообщения
-		Date int  `json:"date"` // время отправки в Unixtime
-	//	UserID   int    `json:"user_id"` // устарело с версии 5.80
+		ID   int `json:"id"`   // идентификатор сообщения
+		Date int `json:"date"` // время отправки в Unixtime
+		//	UserID   int    `json:"user_id"` // устарело с версии 5.80
 		FromID   int    `json:"from_id"` // идентификатор отправителя
 		PhotoID  int    `json:"photo_id"`
 		PostID   int    `json:"post_id"`
@@ -58,7 +58,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 	switch event.Type {
 
-		// Тестовые и системные сообщения
+	// Тестовые и системные сообщения
 	case "confirmation":
 		return confirmationToken, nil
 
@@ -79,7 +79,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
-
 
 	case "message_reply":
 		// новое исходящее сообщение, возникает каждый раз при отправке сообщения и зацикливается, если по факту этого события происходит снова отправка сообщения
@@ -128,8 +127,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-
-
 	case "group_join":
 		// message := event.Object.JoinType
 		userID := strconv.Itoa(event.Object.UserID)
@@ -147,7 +144,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
-
 
 	case "message_typing_state":
 		// кто-то набирает сообщение
@@ -177,6 +173,8 @@ func sendMessage(message, userID string) {
 	q.Add("user_id", userID)
 	q.Add("access_token", token)
 	q.Add("v", vkAPIversion)
+	q.Add("random_id", "0")
+
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := client.Do(req)
