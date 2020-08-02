@@ -31,10 +31,14 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		UserID   int      `json:"user_id"` // устарело с версии 5.80
+		UserID   int      `json:"user_id"` // для фото
+		FromID   int      `json:"from_id"` // для комментариев
+		ID       int      `json:"id"`      // идентификатор фото или комментария
 		PhotoID  int      `json:"photo_id"`
 		PostID   int      `json:"post_id"`
 		JoinType string   `json:"join_type"`
+		AlbumID  int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
+		Text     string   `json:"text"`     // текст описания
 		Message  struct { // Личное сообщение
 			ID     int    `json:"id"`      // идентификатор сообщения
 			Date   int    `json:"date"`    // время отправки в Unixtime
@@ -103,7 +107,18 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-	// Раздел Фотографии
+		// Раздел Фотографии
+
+	case "photo_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.Message.FromID)
+		photoID := strconv.Itoa(event.Object.ID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "добавление фотографии в альбом" + vkPhotoAlbumID + strconv.Itoa(event.Object.AlbumID) + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + " фото " + vkPhotoAlbumID + photoID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
 
 	case "photo_comment_new":
 		// message := event.Object.JoinType
