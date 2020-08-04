@@ -39,6 +39,7 @@ type vkEvents struct {
 		PhotoID    int      `json:"photo_id"`
 		PostID     int      `json:"post_id"`
 		TopicID    int      `json:"topic_id"`
+		ItemID     int      `json:"item_id"`
 		Title      string   `json:"title"`       // название композиции.
 		ObjectType string   `json:"object_type"` // для лайков
 		JoinType   string   `json:"join_type"`
@@ -310,6 +311,35 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		// message := event.Object.JoinType
 
 		message := "Удален комментарий в обсуждении: " + strconv.Itoa(event.Object.TopicID)
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+		// Раздел Товары
+	case "market_comment_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Новый комментарий к товару: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "market_comment_edit":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Редактирование комментария к товару: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "market_comment_delete":
+		// message := event.Object.JoinType
+
+		message := "Удаление комментария к товару: " + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
