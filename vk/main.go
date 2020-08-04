@@ -284,6 +284,17 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
+		// Раздел Обсуждения
+	case "board_post_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Создан комментарий в обсуждении: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
 	case "message_reply":
 		// новое исходящее сообщение, возникает каждый раз при отправке сообщения и зацикливается, если по факту этого события происходит снова отправка сообщения
 		return "ok", nil
