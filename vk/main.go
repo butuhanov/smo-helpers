@@ -82,7 +82,14 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		return "ok", nil
 
-		// Раздел Сообщения
+	case "message_reply":
+		// новое исходящее сообщение, возникает каждый раз при отправке сообщения и зацикливается, если по факту этого события происходит снова отправка сообщения
+		return "ok", nil
+	// case "message_typing_state":
+	// 	// кто-то набирает сообщение
+	// 	return "ok", nil
+
+	// Раздел Сообщения
 	case "message_new":
 		// message := event.Object.JoinType
 		userID := strconv.Itoa(event.Object.Message.FromID)
@@ -344,10 +351,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-	case "message_reply":
-		// новое исходящее сообщение, возникает каждый раз при отправке сообщения и зацикливается, если по факту этого события происходит снова отправка сообщения
-		return "ok", nil
-
+		// Раздел Пользователи
 	case "group_leave":
 		// message := event.Object.JoinType
 		userID := strconv.Itoa(event.Object.UserID)
@@ -375,10 +379,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
-
-	// case "message_typing_state":
-	// 	// кто-то набирает сообщение
-	// 	return "ok", nil
 
 	default:
 		message := "Произошло событие:" + event.Type
