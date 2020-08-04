@@ -38,6 +38,7 @@ type vkEvents struct {
 		ID         int      `json:"id"`       // идентификатор фото или комментария
 		PhotoID    int      `json:"photo_id"`
 		PostID     int      `json:"post_id"`
+		TopicID    int      `json:"topic_id"`
 		Title      string   `json:"title"`       // название композиции.
 		ObjectType string   `json:"object_type"` // для лайков
 		JoinType   string   `json:"join_type"`
@@ -291,6 +292,24 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Создан комментарий в обсуждении: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "board_post_edit":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Отредактирован комментарий в обсуждении: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "board_post_delete":
+		// message := event.Object.JoinType
+
+		message := "Удален комментарий в обсуждении: " + strconv.Itoa(event.Object.TopicID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
