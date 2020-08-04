@@ -33,9 +33,11 @@ type vkEvents struct {
 	Object struct {
 		UserID   int      `json:"user_id"` // для фото
 		FromID   int      `json:"from_id"` // для комментариев
+		OwnerID  int       `json:"owner_id"` // для аудио
 		ID       int      `json:"id"`      // идентификатор фото или комментария
 		PhotoID  int      `json:"photo_id"`
 		PostID   int      `json:"post_id"`
+		Title    string `json:"title"`  // название композиции.
 		JoinType string   `json:"join_type"`
 		AlbumID  int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
 		Text     string   `json:"text"`     // текст описания
@@ -149,6 +151,19 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Удален комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+
+		// Раздел Аудиозаписи
+	case "audio_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.OwnerID)
+		title := event.Object.Title
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Добавлена аудиозапись " + title + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
