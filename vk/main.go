@@ -40,6 +40,7 @@ type vkEvents struct {
 		PostID     int      `json:"post_id"`
 		TopicID    int      `json:"topic_id"`
 		ItemID     int      `json:"item_id"`
+		PollID     int      `json:"poll_id"`
 		Title      string   `json:"title"`       // название композиции.
 		ObjectType string   `json:"object_type"` // для лайков
 		JoinType   string   `json:"join_type"`
@@ -376,6 +377,17 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		}
 		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " вступил в группу" + joinMessage
 
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+		// Раздел Прочее
+	case "poll_vote_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.UserID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "добавление голоса в публичном опросе: " + strconv.Itoa(event.Object.PollID) + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
