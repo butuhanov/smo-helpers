@@ -31,13 +31,13 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		UserID   int      `json:"user_id"` // для фото
-		FromID   int      `json:"from_id"` // для комментариев
-		OwnerID  int       `json:"owner_id"` // для аудио и видео
-		ID       int      `json:"id"`      // идентификатор фото или комментария
+		UserID   int      `json:"user_id"`  // для фото
+		FromID   int      `json:"from_id"`  // для комментариев
+		OwnerID  int      `json:"owner_id"` // для аудио и видео
+		ID       int      `json:"id"`       // идентификатор фото или комментария
 		PhotoID  int      `json:"photo_id"`
 		PostID   int      `json:"post_id"`
-		Title    string `json:"title"`  // название композиции.
+		Title    string   `json:"title"` // название композиции.
 		JoinType string   `json:"join_type"`
 		AlbumID  int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
 		Text     string   `json:"text"`     // текст описания
@@ -155,7 +155,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-
 		// Раздел Аудиозаписи
 	case "audio_new":
 		// message := event.Object.JoinType
@@ -168,7 +167,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
 
-
 		// Раздел Видеозаписи
 	case "video_new":
 		// message := event.Object.JoinType
@@ -177,6 +175,37 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Добавлена видеозапись " + title + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+		// Раздел Записи на стене
+	case "wall_post_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Добавлена запись на стене: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+	case "wall_repost":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Добавлен репост записи на стене: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "wall_reply_new":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.FromID)
+		postID := strconv.Itoa(event.Object.PostID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -191,17 +220,6 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " покинул группу"
-		sendMessage(message, sendToUserID)
-		sendMessage(message, sendToUserIDControl)
-		return "ok", nil
-
-	case "wall_reply_new":
-		// message := event.Object.JoinType
-		userID := strconv.Itoa(event.Object.FromID)
-		postID := strconv.Itoa(event.Object.PostID)
-		firstName, lastName := getUserInfo(userID)
-
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
