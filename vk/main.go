@@ -31,17 +31,19 @@ var (
 type vkEvents struct {
 	Type   string `json:"type"`
 	Object struct {
-		UserID   int      `json:"user_id"`  // для фото
-		FromID   int      `json:"from_id"`  // для комментариев
-		OwnerID  int      `json:"owner_id"` // для аудио и видео
-		ID       int      `json:"id"`       // идентификатор фото или комментария
-		PhotoID  int      `json:"photo_id"`
-		PostID   int      `json:"post_id"`
-		Title    string   `json:"title"` // название композиции.
-		JoinType string   `json:"join_type"`
-		AlbumID  int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
-		Text     string   `json:"text"`     // текст описания
-		Message  struct { // Личное сообщение
+		UserID     int      `json:"user_id"`  // для фото
+		FromID     int      `json:"from_id"`  // для комментариев
+		OwnerID    int      `json:"owner_id"` // для аудио и видео
+		LikerID    int      `json:"liker_id"` // для лайков
+		ID         int      `json:"id"`       // идентификатор фото или комментария
+		PhotoID    int      `json:"photo_id"`
+		PostID     int      `json:"post_id"`
+		Title      string   `json:"title"`       // название композиции.
+		ObjectType string   `json:"object_type"` // для лайков
+		JoinType   string   `json:"join_type"`
+		AlbumID    int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
+		Text       string   `json:"text"`     // текст описания
+		Message    struct { // Личное сообщение
 			ID     int    `json:"id"`      // идентификатор сообщения
 			Date   int    `json:"date"`    // время отправки в Unixtime
 			FromID int    `json:"from_id"` // идентификатор отправителя
@@ -189,6 +191,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
+
 	case "wall_repost":
 		// message := event.Object.JoinType
 		userID := strconv.Itoa(event.Object.FromID)
@@ -206,6 +209,77 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+		// Раздел Отметки "Мне нравится"
+	case "like_add":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.LikerID)
+		var object string
+		switch event.Object.ObjectType {
+		case "video":
+			object = "под видеозаписью "
+		case "photo":
+			object = "под фото "
+		case "comment":
+			object = "под комментарием "
+		case "note":
+			object = "под заметкой "
+		case "topic_comment":
+			object = "под комментарием в обсуждении "
+		case "photo_comment":
+			object = "под комментарием к фото "
+		case "video_comment":
+			object = "под комментарием к видео "
+		case "market":
+			object = "под товаром "
+		case "market_comment":
+			object = "под комментарием к товару "
+		default:
+			object = "под " + event.Object.ObjectType
+		}
+
+		postID := strconv.Itoa(event.Object.PostID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
+		sendMessage(message, sendToUserID)
+		sendMessage(message, sendToUserIDControl)
+		return "ok", nil
+
+	case "like_remove":
+		// message := event.Object.JoinType
+		userID := strconv.Itoa(event.Object.LikerID)
+		var object string
+		switch event.Object.ObjectType {
+		case "video":
+			object = "под видеозаписью "
+		case "photo":
+			object = "под фото "
+		case "comment":
+			object = "под комментарием "
+		case "note":
+			object = "под заметкой "
+		case "topic_comment":
+			object = "под комментарием в обсуждении "
+		case "photo_comment":
+			object = "под комментарием к фото "
+		case "video_comment":
+			object = "под комментарием к видео "
+		case "market":
+			object = "под товаром "
+		case "market_comment":
+			object = "под комментарием к товару "
+		default:
+			object = "под " + event.Object.ObjectType
+		}
+
+		postID := strconv.Itoa(event.Object.PostID)
+		firstName, lastName := getUserInfo(userID)
+
+		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
