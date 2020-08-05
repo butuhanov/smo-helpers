@@ -234,31 +234,30 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		var object string
 		switch event.Object.ObjectType {
 		case "video":
-			object = "под видеозаписью "
+			object = "под видеозаписью " + strconv.Itoa(event.Object.ObjectID)
 		case "photo":
-			object = "под фото "
+			object = "под фото " + vkPhotoAlbumID + strconv.Itoa(event.Object.ObjectID)
 		case "comment":
-			object = "под комментарием "
+			object = "под комментарием " + strconv.Itoa(event.Object.ObjectID)
 		case "note":
-			object = "под заметкой "
+			object = "под заметкой " + strconv.Itoa(event.Object.ObjectID)
 		case "topic_comment":
-			object = "под комментарием в обсуждении "
+			object = "под комментарием в обсуждении " + strconv.Itoa(event.Object.ObjectID)
 		case "photo_comment":
-			object = "под комментарием к фото "
+			object = "под комментарием к фото " + strconv.Itoa(event.Object.ObjectID)
 		case "video_comment":
-			object = "под комментарием к видео "
+			object = "под комментарием к видео " + strconv.Itoa(event.Object.ObjectID)
 		case "market":
-			object = "под товаром "
+			object = "под товаром " + strconv.Itoa(event.Object.ObjectID)
 		case "market_comment":
-			object = "под комментарием к товару "
+			object = "под комментарием к товару " + strconv.Itoa(event.Object.ObjectID)
 		default:
-			object = "под " + event.Object.ObjectType
+			object = "под " + event.Object.ObjectType + strconv.Itoa(event.Object.ObjectID)
 		}
 
-		postID := strconv.Itoa(event.Object.PostID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
+		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -269,31 +268,31 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		var object string
 		switch event.Object.ObjectType {
 		case "video":
-			object = "под видеозаписью "
+			object = "под видеозаписью " + strconv.Itoa(event.Object.ObjectID)
 		case "photo":
-			object = "под фото "
+			object = "под фото " + vkPhotoAlbumID + strconv.Itoa(event.Object.ObjectID)
 		case "comment":
-			object = "под комментарием "
+			object = "под комментарием " + strconv.Itoa(event.Object.ObjectID)
 		case "note":
-			object = "под заметкой "
+			object = "под заметкой " + strconv.Itoa(event.Object.ObjectID)
 		case "topic_comment":
-			object = "под комментарием в обсуждении "
+			object = "под комментарием в обсуждении " + strconv.Itoa(event.Object.ObjectID)
 		case "photo_comment":
-			object = "под комментарием к фото "
+			object = "под комментарием к фото " + strconv.Itoa(event.Object.ObjectID)
 		case "video_comment":
-			object = "под комментарием к видео "
+			object = "под комментарием к видео " + strconv.Itoa(event.Object.ObjectID)
 		case "market":
-			object = "под товаром "
+			object = "под товаром " + strconv.Itoa(event.Object.ObjectID)
 		case "market_comment":
-			object = "под комментарием к товару "
+			object = "под комментарием к товару " + strconv.Itoa(event.Object.ObjectID)
 		default:
-			object = "под " + event.Object.ObjectType
+			object = "под " + event.Object.ObjectType + strconv.Itoa(event.Object.ObjectID)
 		}
 
-		postID := strconv.Itoa(event.Object.PostID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object + " ссылка на запись https://vk.com/" + vkWallID + postID + "%2Fall"
+		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object
+
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
