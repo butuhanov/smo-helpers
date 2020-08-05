@@ -23,9 +23,12 @@ var (
 	vkAPIversion        = os.Getenv("VKAPI")          // Версия API
 	sendToUserID        = os.Getenv("USERID")         // Пользователь, которому будут отправляться уведомления
 	sendToUserIDControl = os.Getenv("USERID_CONTROL") // Дополнительно отправлять сообщения пользователю
-	vkPhotoAlbumID      = os.Getenv("PHOTO_ALBUM_ID") // Идентификатор фотоальбома в формате photo-xxx_
-	vkWallID            = os.Getenv("WALL_ID")        // Идентификатор стены в формате xxx?w=wall-xxx_
+	vkGroupID           = os.Getenv("GROUP_ID")       // Идентификатор группы
+	vkGroupName         = os.Getenv("GROUP_NAME")     // Название группы
 
+	vkWallID       = vkGroupName + "?w=wall-" + vkGroupID + "_"   // Идентификатор стены в формате xxx?w=wall-xxx_
+	vkPhotoAlbumID = "photo-" + vkGroupID + "_"                   // Идентификатор фотоальбома в формате photo-xxx_
+	vkPhotoID      = vkGroupName + "??z=photo-" + vkGroupID + "_" // Идентификатор фото
 )
 
 type vkEvents struct {
@@ -43,6 +46,7 @@ type vkEvents struct {
 		PollID     int      `json:"poll_id"`
 		Title      string   `json:"title"`       // название композиции.
 		ObjectType string   `json:"object_type"` // для лайков
+		ObjectID   int      `json:"object_id"`
 		JoinType   string   `json:"join_type"`
 		AlbumID    int      `json:"album_id"` // идентификатор альбома, в котором находится фотография
 		Text       string   `json:"text"`     // текст описания
