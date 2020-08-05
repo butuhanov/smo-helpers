@@ -26,9 +26,9 @@ var (
 	vkGroupID           = os.Getenv("GROUP_ID")       // Идентификатор группы
 	vkGroupName         = os.Getenv("GROUP_NAME")     // Название группы
 
-	vkWallID       = vkGroupName + "?w=wall-" + vkGroupID + "_"   // Идентификатор стены в формате xxx?w=wall-xxx_
-	vkPhotoAlbumID = "photo-" + vkGroupID + "_"                   // Идентификатор фотоальбома в формате photo-xxx_
-	vkPhotoID      = vkGroupName + "??z=photo-" + vkGroupID + "_" // Идентификатор фото
+	vkWallID       = vkGroupName + "?w=wall-" + vkGroupID + "_"  // Идентификатор стены в формате xxx?w=wall-xxx_
+	vkPhotoAlbumID = "photo-" + vkGroupID + "_"                  // Идентификатор фотоальбома в формате photo-xxx_
+	vkPhotoID      = vkGroupName + "?z=photo-" + vkGroupID + "_" // Идентификатор фото
 )
 
 type vkEvents struct {
