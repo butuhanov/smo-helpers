@@ -90,9 +90,10 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 	case "message_reply":
 		// новое исходящее сообщение, возникает каждый раз при отправке сообщения и зацикливается, если по факту этого события происходит снова отправка сообщения
 		return "ok", nil
-	// case "message_typing_state":
-	// 	// кто-то набирает сообщение
-	// 	return "ok", nil
+
+	case "message_typing_state":
+		// кто-то набирает сообщение, может быть очень много уведомлений
+		return "ok", nil
 
 	// Раздел Сообщения
 	case "message_new":
