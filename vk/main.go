@@ -29,6 +29,7 @@ var (
 	vkWallID       = vkGroupName + "?w=wall-" + vkGroupID + "_"  // Идентификатор стены в формате xxx?w=wall-xxx_
 	vkPhotoAlbumID = "photo-" + vkGroupID + "_"                  // Идентификатор фотоальбома в формате photo-xxx_
 	vkPhotoID      = vkGroupName + "?z=photo-" + vkGroupID + "_" // Идентификатор фото
+	vkTopicID      = "https://vk.com/topic-" + vkGroupID + "_"
 )
 
 type vkEvents struct {
@@ -308,7 +309,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Создан комментарий в обсуждении: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Создан комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -318,7 +319,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Отредактирован комментарий в обсуждении: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Отредактирован комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -326,7 +327,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 	case "board_post_delete":
 		// message := event.Object.JoinType
 
-		message := "Удален комментарий в обсуждении: " + strconv.Itoa(event.Object.TopicID)
+		message := "Удален комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
