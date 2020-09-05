@@ -102,7 +102,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.Message.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "входящее сообщение:" + event.Object.Message.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "входящее сообщение:" + event.Object.Message.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -112,7 +112,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.Message.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "подписка на сообщения от сообщества:" + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "подписка на сообщения от сообщества:" + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -122,7 +122,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.Message.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "новый запрет сообщений от сообщества:" + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "новый запрет сообщений от сообщества:" + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -135,7 +135,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		photoID := strconv.Itoa(event.Object.ID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "добавление фотографии в альбом" + vkPhotoAlbumID + strconv.Itoa(event.Object.AlbumID) + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + " фото " + vkPhotoAlbumID + photoID
+		message := "добавление фотографии в альбом" + vkPhotoAlbumID + strconv.Itoa(event.Object.AlbumID) + " от " + lastName + " " + firstName + " https://vk.com/id" + userID + " фото " + vkPhotoAlbumID + photoID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -146,7 +146,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		photoID := strconv.Itoa(event.Object.PhotoID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Добавлен комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Добавлен комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -157,7 +157,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		photoID := strconv.Itoa(event.Object.PhotoID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Отредактирован комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Отредактирован комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -168,7 +168,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		photoID := strconv.Itoa(event.Object.PhotoID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Удален комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Удален комментарий под фото https://vk.com/" + vkPhotoAlbumID + photoID + " " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -180,7 +180,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		title := event.Object.Title
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Добавлена аудиозапись " + title + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Добавлена аудиозапись " + title + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -192,7 +192,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		title := event.Object.Title
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Добавлена видеозапись " + title + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Добавлена видеозапись " + title + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -203,7 +203,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Добавлена запись на стене: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Добавлена запись на стене: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -213,7 +213,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Добавлен репост записи на стене: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Добавлен репост записи на стене: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
