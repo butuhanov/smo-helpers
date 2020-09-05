@@ -224,7 +224,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		postID := strconv.Itoa(event.Object.PostID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -261,7 +261,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -297,7 +297,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object
 
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
@@ -309,7 +309,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Создан комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Создан комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -319,7 +319,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Отредактирован комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "Отредактирован комментарий в обсуждении: " + vkTopicID + strconv.Itoa(event.Object.TopicID) + " с текстом" + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -338,7 +338,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Новый комментарий к товару: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
+		message := "Новый комментарий к товару: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -348,7 +348,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Редактирование комментария к товару: " + event.Object.Text + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
+		message := "Редактирование комментария к товару: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -367,7 +367,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.UserID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " покинул группу"
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " покинул группу"
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -384,7 +384,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		case "request":
 			joinMessage = "подал приглашение"
 		}
-		message := "Пользователь " + lastName + " " + firstName + " https://vk.com/id" + userID + " вступил в группу" + joinMessage
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " вступил в группу" + joinMessage
 
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
@@ -396,7 +396,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.UserID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "добавление голоса в публичном опросе: " + strconv.Itoa(event.Object.PollID) + " от пользователя " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
+		message := "добавление голоса в публичном опросе: " + strconv.Itoa(event.Object.PollID) + " от " + lastName + " " + firstName + " https://vk.com/id" + userID + "идентификатор товара " + strconv.Itoa(event.Object.ItemID)
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
