@@ -28,6 +28,7 @@ var (
 
 	vkWallID       = vkGroupName + "?w=wall-" + vkGroupID + "_"  // Идентификатор стены в формате xxx?w=wall-xxx_
 	vkPhotoAlbumID = "photo-" + vkGroupID + "_"                  // Идентификатор фотоальбома в формате photo-xxx_
+	vkVideoID      = vkGroupName + "?z=video-" + vkGroupID + "_" // Идентификатор видео
 	vkPhotoID      = vkGroupName + "?z=photo-" + vkGroupID + "_" // Идентификатор фото
 	vkTopicID      = "https://vk.com/topic-" + vkGroupID + "_"
 )
@@ -102,7 +103,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.Message.FromID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := "входящее сообщение:" + event.Object.Message.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
+		message := "входящее сообщение от " + lastName + " " + firstName + " https://vk.com/id" + userID + ": " + event.Object.Message.Text
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -238,7 +239,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		case "post":
 			object = "под записью " + vkWallID + strconv.Itoa(event.Object.ObjectID)
 		case "video":
-			object = "под видеозаписью " + strconv.Itoa(event.Object.ObjectID)
+			object = "под видеозаписью " + vkVideoID + strconv.Itoa(event.Object.ObjectID)
 		case "photo":
 			object = "под фото " + vkPhotoID + strconv.Itoa(event.Object.ObjectID)
 		case "comment":
