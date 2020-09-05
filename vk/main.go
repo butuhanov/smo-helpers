@@ -243,7 +243,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		case "photo":
 			object = "под фото " + vkPhotoID + strconv.Itoa(event.Object.ObjectID)
 		case "comment":
-			object = "под комментарием " + strconv.Itoa(event.Object.ObjectID)
+			object = "под комментарием в записи " + vkWallID+ strconv.Itoa(event.Object.ObjectID)
 		case "note":
 			object = "под заметкой " + strconv.Itoa(event.Object.ObjectID)
 		case "topic_comment":
