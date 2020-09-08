@@ -225,7 +225,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		postID := strconv.Itoa(event.Object.PostID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := lastName + " " + firstName + " https://vk.com/id" + userID + " оставил комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " оставил(а) комментарий на стене: " + event.Object.Text + " ссылка на запись https://vk.com/" + vkWallID + postID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -243,7 +243,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		case "photo":
 			object = "под фото " + vkPhotoID + strconv.Itoa(event.Object.ObjectID)
 		case "comment":
-			object = "под комментарием в записи " + vkWallID+ strconv.Itoa(event.Object.ObjectID)
+			object = "под комментарием в записи " + vkWallID + strconv.Itoa(event.Object.ObjectID)
 		case "note":
 			object = "под заметкой " + strconv.Itoa(event.Object.ObjectID)
 		case "topic_comment":
@@ -262,7 +262,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		firstName, lastName := getUserInfo(userID)
 
-		message := lastName + " " + firstName + " https://vk.com/id" + userID + " поставил лайк " + object
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " поставил(а) лайк " + object
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
@@ -298,7 +298,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 
 		firstName, lastName := getUserInfo(userID)
 
-		message := lastName + " " + firstName + " https://vk.com/id" + userID + " удалил лайк " + object
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " удалил(а) лайк " + object
 
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
@@ -385,7 +385,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		case "request":
 			joinMessage = "подал приглашение"
 		}
-		message := lastName + " " + firstName + " https://vk.com/id" + userID + " вступил в группу" + joinMessage
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " вступил(а) в группу" + joinMessage
 
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
