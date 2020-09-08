@@ -75,6 +75,8 @@ type response struct {
 
 func handleLambdaEvent(event vkEvents) (string, error) {
 
+	log.Printf("EVENT: %v", event)
+
 	switch event.Type {
 
 	// Тестовые и системные сообщения
