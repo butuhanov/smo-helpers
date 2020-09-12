@@ -58,6 +58,12 @@ type vkEvents struct {
 			FromID int    `json:"from_id"` // идентификатор отправителя
 			Text   string `json:"text"`    // текст сообщения
 		} `json:"message"`
+		CopyHistory struct { // Репост
+			ID       int    `json:"id"`
+			Date     int    `json:"date"`
+			PostType string `json:"post_type"`
+			Text     string `json:"text"`
+		} `json:"copy_history"`
 	} `json:"object"`
 	GroupID int `json:"group_id"`
 }
@@ -215,8 +221,14 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		// message := event.Object.JoinType
 		userID := strconv.Itoa(event.Object.FromID)
 		firstName, lastName := getUserInfo(userID)
+		var message string
+		switch event.Object.CopyHistory.PostType {
+		case "photo":
+			message = "Добавлен репост записи на стене к фото: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID + " ссылка:https://vk.com/id" + string(event.Object.FromID) + "?z=photo-" + string(event.GroupID) + "_" + string(event.Object.CopyHistory.ID) + "%2Fwall" + string(event.Object.FromID) + "_" + string(event.Object.ID)
+		default:
+			message = "Добавлен репост записи на стене: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
+		}
 
-		message := "Добавлен репост записи на стене: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
