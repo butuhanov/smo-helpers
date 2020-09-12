@@ -370,7 +370,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		userID := strconv.Itoa(event.Object.UserID)
 		firstName, lastName := getUserInfo(userID)
 
-		message := lastName + " " + firstName + " https://vk.com/id" + userID + " покинул группу"
+		message := lastName + " " + firstName + " https://vk.com/id" + userID + " покинул(а) группу"
 		sendMessage(message, sendToUserID)
 		sendMessage(message, sendToUserIDControl)
 		return "ok", nil
