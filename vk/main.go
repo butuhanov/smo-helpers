@@ -429,6 +429,8 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 // sendMessage отправляет сообщение пользователю
 func sendMessage(message, userID string) {
 
+	log.Printf("Sending message: %v", message)
+
 	url := "https://api.vk.com/method/messages.send"
 
 	client := &http.Client{}
