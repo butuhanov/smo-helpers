@@ -61,6 +61,7 @@ type vkEvents struct {
 		CopyHistory struct { // Репост
 			ID       int    `json:"id"`
 			Date     int    `json:"date"`
+			FromID int    `json:"from_id"`
 			PostType string `json:"post_type"`
 			Text     string `json:"text"`
 		} `json:"copy_history"`
@@ -209,7 +210,7 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 		// Раздел Записи на стене
 	case "wall_post_new":
 		// message := event.Object.JoinType
-		userID := strconv.Itoa(event.Object.FromID)
+		userID := strconv.Itoa(event.Object.CopyHistory.FromID)
 		firstName, lastName := getUserInfo(userID)
 
 		message := "Добавлена запись на стене: " + event.Object.Text + " от " + lastName + " " + firstName + " https://vk.com/id" + userID
