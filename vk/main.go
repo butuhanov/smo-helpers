@@ -460,6 +460,8 @@ func sendMessage(message, userID string) {
 // getUserInfo получает информацию о пользователе
 func getUserInfo(userID string) (string, string) {
 
+	log.Printf("Check user: %v", userID)
+
 	vkURL := "https://api.vk.com/method/users.get?user_ids=" + userID + "&access_token=" + token + "&v=" + vkAPIversion
 	user := new(user) // or &User{}
 	getJSON(vkURL, user)
