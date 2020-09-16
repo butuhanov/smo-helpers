@@ -61,7 +61,7 @@ type vkEvents struct {
 		CopyHistory struct { // Репост
 			ID       int    `json:"id"`
 			Date     int    `json:"date"`
-			FromID int    `json:"from_id"`
+			FromID   int    `json:"from_id"`
 			PostType string `json:"post_type"`
 			Text     string `json:"text"`
 		} `json:"copy_history"`
@@ -461,6 +461,10 @@ func sendMessage(message, userID string) {
 func getUserInfo(userID string) (string, string) {
 
 	log.Printf("Check user: %v", userID)
+
+	if userID == "0" {
+		return "пользователь", "не удалось определить"
+	}
 
 	vkURL := "https://api.vk.com/method/users.get?user_ids=" + userID + "&access_token=" + token + "&v=" + vkAPIversion
 	user := new(user) // or &User{}
