@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -430,13 +429,15 @@ func handleLambdaEvent(event vkEvents) (string, error) {
 // sendMessage отправляет сообщение пользователю
 func sendMessage(message, userID string) {
 
-	log.Printf("Sending message: %v", message)
+	log.Printf("Sending message: %v to user %v", message, userID)
 
 	url := "https://api.vk.com/method/messages.send"
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
-	checkErr(err, "sendMessage:http.NewRequest")
+	if err != nil {
+		log.Fatal("error: ошибка при отправке сообщения в блоке http.NewRequest")
+	}
 
 	q := req.URL.Query()
 	q.Add("message", message)
@@ -448,11 +449,15 @@ func sendMessage(message, userID string) {
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := client.Do(req)
-	checkErr(err, "sendMessage:client.Do")
+	if err != nil {
+		log.Fatal("error: ошибка при отправке сообщения в блоке client.Do")
+	}
 
 	echo, err := ioutil.ReadAll(resp.Body)
-	checkErr(err, "sendMessage:ioutil.ReadAll")
-	fmt.Printf("%s\r\n", echo)
+	if err != nil {
+		log.Fatal("error: ошибка при отправке сообщения в блоке ioutil.ReadAll")
+	}
+	log.Printf("Ответ: %s\r\n", echo)
 	defer resp.Body.Close()
 
 }
@@ -484,15 +489,15 @@ func checkErr(err error, message string) {
 	if err != nil {
 		log.Print("error:" + message)
 		log.Print(err.Error())
+		message := "Возникла ОШИБКА в функции " + err.Error() + " " + message
+		sendMessage(message, sendToUserIDControl)
 	}
 
 }
 
 func getJSON(url string, target interface{}) error {
 	r, err := myClient.Get(url)
-	if err != nil {
-		return err
-	}
+	checkErr(err, "getJSON")
 	defer r.Body.Close()
 
 	return json.NewDecoder(r.Body).Decode(target)
