@@ -463,7 +463,7 @@ func getUserInfo(userID string) (string, string) {
 	log.Printf("Check user: %v", userID)
 
 	if userID == "0" {
-		return "Владелец", "группы"
+		return "группы", "Владелец"
 	}
 
 	vkURL := "https://api.vk.com/method/users.get?user_ids=" + userID + "&access_token=" + token + "&v=" + vkAPIversion
