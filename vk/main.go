@@ -57,14 +57,14 @@ type vkEvents struct {
 			FromID int    `json:"from_id"` // идентификатор отправителя
 			Text   string `json:"text"`    // текст сообщения
 		} `json:"message"`
-		CopyHistory struct { // Репост
-			ID       int    `json:"id"`
-			Date     int    `json:"date"`
-			FromID   int    `json:"from_id"`
-			PostType string `json:"post_type"`
-			Text     string `json:"text"`
-		} `json:"copy_history"`
 	} `json:"object"`
+	CopyHistory struct { // Репост
+		ID       int    `json:"id"`
+		Date     int    `json:"date"`
+		FromID   int    `json:"from_id"`
+		PostType string `json:"post_type"`
+		Text     string `json:"text"`
+	} `json:"copy_history"`
 	GroupID int `json:"group_id"`
 }
 
