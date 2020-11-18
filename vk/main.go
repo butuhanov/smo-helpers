@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+// using VK Callback API
 var (
 	confirmationToken   = os.Getenv("CONFIRMATION_TOKEN")
 	token               = os.Getenv("TOKEN")
